@@ -3,8 +3,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    fontFamily: {
-      sans: "Roboto Mono , monospace",
+    colors: {
+      darkest: "#404258",
+      dark: "#474E68",
+      light: "#50577A",
+      lightest: "#6B728E",
+      whi: "#F5F5F7",
     },
     extend: {
       height: {
