@@ -5,18 +5,18 @@ function HeaderSettings() {
   return (
     <div className="flex items-center justify-center gap-2">
       <div className="relative flex items-center justify-center">
-        <HiMagnifyingGlass className="fill-whi absolute left-1 top-[25%] translate-y-[-12.5%]" />
+        <HiMagnifyingGlass className="absolute left-1 top-[25%] translate-y-[-12.5%] fill-whi" />
         <input
-          className="bg-lightest placeholder:text-whi text-whi border-dark flex h-7 w-[12rem] items-center rounded-full border-2 border-solid pl-6 text-xs placeholder:text-sm"
+          className="f flex h-7 w-[12rem] items-center rounded-full border-2 border-solid border-dark bg-lightest pl-6 text-xs text-whi duration-150 placeholder:text-sm placeholder:text-whi focus:scale-x-105 focus:outline-none focus:ring"
           type="text"
           placeholder="Search for city"
         />
       </div>
-      <select className="bg-lightest text-whi border-dark h-8 rounded-full border-2 border-solid text-center text-xs">
+      <select className="h-8 rounded-full border-2 border-solid border-dark bg-lightest text-center text-xs text-whi">
         <option>ENG</option>
         <option>LT</option>
       </select>
-      <div className="bg-lightest border-dark flex gap-1 rounded-full border-2 border-solid p-1">
+      <div className="flex gap-1 rounded-full border-2 border-solid border-dark bg-lightest p-1">
         <Button>
           C<span>&deg;</span>
         </Button>
