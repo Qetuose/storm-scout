@@ -1,7 +1,14 @@
-function Button({ children, active }) {
-  return (
-    <button className="bg-whi h-5 w-5 rounded-full text-xs">{children}</button>
-  );
+function Button({ children, type = "regular", onClick }) {
+  if (type === "regular") return <button>{children}</button>;
+  if (type === "toggle")
+    return (
+      <button
+        onClick={onClick}
+        className="relative flex items-center gap-2 text-sm text-whi transition-all duration-500"
+      >
+        {children}
+      </button>
+    );
 }
 
 export default Button;

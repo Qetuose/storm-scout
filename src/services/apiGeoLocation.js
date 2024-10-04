@@ -24,5 +24,7 @@ export async function fetchReversedPosition(latitude, longitude) {
   );
   const data = await response.json();
 
-  return data;
+  const { country, city } = data.features.at(0).properties;
+
+  return { country, city };
 }

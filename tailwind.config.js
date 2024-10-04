@@ -1,7 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+const withMT = require("@material-tailwind/react/utils/withMT");
+
+module.exports = withMT({
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "path-to-your-node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+    "path-to-your-node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     colors: {
       darkest: "#404258",
@@ -9,6 +16,7 @@ export default {
       light: "#50577A",
       lightest: "#6B728E",
       whi: "#F5F5F7",
+      whiDarker: "#c0b9c9",
     },
     extend: {
       height: {
@@ -17,4 +25,4 @@ export default {
     },
   },
   plugins: [],
-};
+});
