@@ -1,14 +1,23 @@
 import { WEATHER_API_KEY, WEATHER_API_URL } from "../utils/constants";
 //Example: https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/London,UK?key=YOUR_API_KEY
 
-export async function getWeather({ country, city }) {
-  const response = await fetch(
-    `${WEATHER_API_URL}//${country},${city}?key=${WEATHER_API_KEY}`,
+export async function getWeather() {
+  const location = "London";
+
+  const geoResponse = await fetch(
+    `https://geocoding-api.open-meteo.com/v1/search?name=${location}`,
   );
+  const geoData = await geoResponse.json();
+  if (!geoData.results) throw new Error("Location not found");
 
-  if (!response.ok) throw new Error("Failed getting WEATHER");
+  const { latitude, longitude, timezone } = geoData.results.at(0);
 
-  const data = await response.json();
+  const weatherResponse = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=${timezone}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_80m`,
+  );
+  const weatherData = await weatherResponse.json();
+
+  const data = { ...weatherData, ...geoData.results.at(0) };
 
   return data;
 }

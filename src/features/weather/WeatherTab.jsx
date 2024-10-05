@@ -1,14 +1,14 @@
-function weatherTab({ weather }) {
-  const { datetime, temp } = weather;
-  const formatedTime = datetime.slice(0, 2);
-  const formatedTime2 = formatedTime.startsWith("0")
-    ? formatedTime.slice(1)
-    : formatedTime;
+import { formatTemp } from "../../utils/helpers";
+
+function weatherTab({ weather, unit }) {
+  const { temp, time, code } = weather;
+  const formatedTime = time.slice(12).slice(0, 4);
 
   return (
-    <div className="rounded-md bg-darkest p-1">
-      <p>{formatedTime2}</p>
-      <p>{Math.ceil(temp)}</p>
+    <div className="overflow-hidden rounded-md bg-darkest p-1">
+      <p>{formatedTime}</p>
+      <p>{code}</p>
+      <p>{formatTemp(temp, unit)}</p>
     </div>
   );
 }
