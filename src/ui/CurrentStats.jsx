@@ -1,6 +1,6 @@
 import { WeatherSvg } from "weather-icons-animated";
 import { useWeather } from "../features/weather/useWeather";
-import { formatTemp, getWeatherIconAnimated } from "../utils/helpers";
+import { formatTemp, getWeatherIcon } from "../utils/helpers";
 import { useUnit } from "../contexts/UnitContext";
 import { Spinner } from "@material-tailwind/react";
 
@@ -30,7 +30,7 @@ function CurrentStat() {
     <div className="flex items-center justify-around text-whi">
       <div className="rounded-xl bg-dark shadow-md shadow-black/40">
         <WeatherSvg
-          state={getWeatherIconAnimated(weather_code)}
+          state={getWeatherIcon(weather_code, true)}
           width={75}
           height={75}
         />

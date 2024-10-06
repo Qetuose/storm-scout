@@ -1,6 +1,6 @@
 import Container from "../ui/Container";
 import CurrentStats from "../ui/CurrentStats";
-import WeatherTab from "../features/weather/weatherTab";
+import WeatherTab from "../features/weather/WeatherTab";
 import { useWeather } from "../features/weather/useWeather";
 import { useUnit } from "../contexts/UnitContext";
 

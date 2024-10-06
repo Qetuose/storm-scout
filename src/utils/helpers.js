@@ -4,17 +4,17 @@ export function convertTofahrenheit(temp) {
   return tempF;
 }
 
-export function getWeatherIconAnimated(wmoCode) {
+export function getWeatherIcon(wmoCode, animated = false) {
   const icons = new Map([
-    [[0], "sunny"],
-    [[1, 2], "partlycloudy"],
-    [[3], "cloudy"],
-    [[45, 48], "fog"],
-    [[51, 56, 61, 66, 80], "rainy"],
-    [[53, 55, 63, 65, 57, 67, 81, 82], "pouring"],
-    [[71, 73, 75, 77, 85, 86], "snowy"],
-    [[95], "lightning"],
-    [[96, 99], "lightning-rainy"],
+    [[0], animated ? "sunny" : ""],
+    [[1, 2], animated ? "partlycloudy" : ""],
+    [[3], animated ? "cloudy" : ""],
+    [[45, 48], animated ? "fog" : ""],
+    [[51, 56, 61, 66, 80], animated ? "rainy" : ""],
+    [[53, 55, 63, 65, 57, 67, 81, 82], animated ? "pouring" : ""],
+    [[71, 73, 75, 77, 85, 86], animated ? "snowy" : ""],
+    [[95], animated ? "lightning" : ""],
+    [[96, 99], animated ? "lightning-rainy" : ""],
   ]);
   const arr = [...icons.keys()].find((key) => key.includes(wmoCode));
   if (!arr) return "NOT FOUND";

@@ -1,6 +1,3 @@
-import { WEATHER_API_KEY, WEATHER_API_URL } from "../utils/constants";
-//Example: https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/London,UK?key=YOUR_API_KEY
-
 export async function getWeather() {
   const location = "London";
 

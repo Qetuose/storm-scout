@@ -1,4 +1,5 @@
-import { formatTemp } from "../../utils/helpers";
+import { WeatherSvg } from "weather-icons-animated";
+import { formatTemp, getWeatherIcon } from "../../utils/helpers";
 
 function weatherTab({ weather, unit }) {
   const { temp, time, code } = weather;
@@ -7,7 +8,7 @@ function weatherTab({ weather, unit }) {
   return (
     <div className="overflow-hidden rounded-md bg-darkest p-1">
       <p>{formatedTime}</p>
-      <p>{code}</p>
+      <WeatherSvg state={getWeatherIcon(code, true)} height={15} />
       <p>{formatTemp(temp, unit)}</p>
     </div>
   );
