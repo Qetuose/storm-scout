@@ -1,17 +1,66 @@
-import { WeatherSvg } from "weather-icons-animated";
-import { formatTemp, getWeatherIcon } from "../../utils/helpers";
+import { useCallback, useEffect, useState } from "react";
+import Tabs from ".//Tabs";
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 
-function weatherTab({ weather, unit }) {
-  const { temp, time, code } = weather;
-  const formatedTime = time.slice(12).slice(0, 4);
+function WeatherTab({ weather }) {
+  const [weatherTabs, setWeatherTabs] = useState([]);
+  const [sliderStart, setSliderStart] = useState(0);
+  const [sliderEnd, setSliderEnd] = useState(7);
+
+  const populateTabs = useCallback(() => {
+    setWeatherTabs([]);
+    for (let i = sliderStart; i <= sliderEnd; i++) {
+      setWeatherTabs((tab) => [
+        ...tab,
+        {
+          time: weather.hourly.time.slice(0, 24)[i],
+          temp: weather.hourly.temperature_2m.slice(0, 24)[i],
+          code: weather.hourly.weather_code.slice(0, 24)[i],
+        },
+      ]);
+    }
+  }, [
+    sliderStart,
+    sliderEnd,
+    weather.hourly.time,
+    weather.hourly.temperature_2m,
+    weather.hourly.weather_code,
+  ]);
+
+  useEffect(() => {
+    populateTabs();
+  }, [populateTabs]);
+
+  function handleButtonLeft() {
+    setSliderStart((start) => start - 8);
+    setSliderEnd((end) => end - 8);
+  }
+  function handleButtonRight() {
+    setSliderStart((start) => start + 8);
+    setSliderEnd((end) => end + 8);
+  }
 
   return (
-    <div className="overflow-hidden rounded-md bg-darkest p-1">
-      <p>{formatedTime}</p>
-      <WeatherSvg state={getWeatherIcon(code, true)} height={15} />
-      <p>{formatTemp(temp, unit)}</p>
+    <div className="flex items-center justify-between px-6 text-sm text-whi">
+      <button
+        className="flex h-5 w-5 items-center justify-center rounded-full bg-dark"
+        disabled={sliderStart - 8 <= -1}
+        onClick={handleButtonLeft}
+      >
+        <HiOutlineChevronLeft />
+      </button>
+      {weatherTabs.map((weather, i) => (
+        <Tabs key={i} weather={weather} />
+      ))}
+      <button
+        className="flex h-5 w-5 items-center justify-center rounded-full bg-dark"
+        disabled={sliderEnd + 8 >= 24}
+        onClick={handleButtonRight}
+      >
+        <HiOutlineChevronRight />
+      </button>
     </div>
   );
 }
 
-export default weatherTab;
+export default WeatherTab;

@@ -1,5 +1,5 @@
 export async function getWeather() {
-  const location = "London";
+  const location = "Plunge";
 
   const geoResponse = await fetch(
     `https://geocoding-api.open-meteo.com/v1/search?name=${location}`,
