@@ -4,23 +4,26 @@ import { useUnit } from "../contexts/UnitContext";
 
 function HeaderSettings() {
   const { unit, setUnit } = useUnit();
-  const pos = unit === "C" ? "translate-x-[-10%]" : "translate-x-[100%] ";
+  const pos =
+    unit === "C"
+      ? "translate-x-[-70%] translate-y-[-10%]"
+      : "translate-x-[20%] translate-y-[-10%]";
 
   return (
     <div className="flex items-center justify-center gap-2">
       <div className="relative flex items-center justify-center">
-        <HiMagnifyingGlass className="absolute left-1 top-[25%] translate-y-[-12.5%] fill-whi" />
+        <HiMagnifyingGlass className="translate-y-25%] absolute left-2 top-[25%] z-20 h-6 w-6 fill-whi" />
         <input
-          className="f flex h-7 w-[12rem] items-center rounded-full border-2 border-solid border-dark bg-lightest pl-6 text-xs text-whi duration-150 placeholder:text-sm placeholder:text-whi focus:scale-x-105 focus:outline-none focus:ring"
+          className="flex h-11 w-[18rem] items-center rounded-full border-2 border-solid border-dark border-transparent bg-lightest pl-9 text-base text-whi duration-150 placeholder:text-sm placeholder:text-whi focus:scale-x-105 focus:border-transparent focus:ring-0"
           type="text"
           placeholder="Search for city"
         />
       </div>
-      <select className="h-8 rounded-full border-2 border-solid border-dark bg-lightest text-center text-xs text-whi">
+      <select className="h-11 rounded-2xl border-2 border-solid border-dark bg-lightest text-center text-base text-whi">
         <option>ENG</option>
         <option>LT</option>
       </select>
-      <div className="flex gap-1 rounded-full border-2 border-solid border-dark bg-lightest p-1">
+      <div className="flex h-11 w-[4rem] items-center justify-center gap-1 rounded-2xl border-2 border-solid border-dark bg-lightest">
         <Button
           type="toggle"
           onClick={() => setUnit((unit) => (unit === "F" ? "C" : "F"))}
@@ -32,7 +35,7 @@ function HeaderSettings() {
             F&deg;
           </span>
           <span
-            className={`absolute ${pos} h-5 w-5 rounded-full bg-whi transition-all duration-300`}
+            className={`absolute right-0 top-0 ${pos} h-7 w-7 rounded-lg bg-whi transition-all duration-300`}
           />
         </Button>
       </div>

@@ -10,15 +10,15 @@ function User() {
   });
 
   return (
-    <div className="text-whi flex items-center gap-5">
+    <div className="flex items-center gap-5 text-whi">
       <img
-        className="h-9 w-9 rounded-full"
+        className="h-11 w-11 rounded-full"
         src="./default-user.jpg"
         alt="users profile"
       />
       <div>
-        <p className="text-xs">Hello %X%</p>
-        <p className="text-lg">{fomartedDay}</p>
+        <p className="text-base">Hello %X%</p>
+        <p className="text-2xl">{fomartedDay}</p>
       </div>
     </div>
   );

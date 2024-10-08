@@ -41,9 +41,9 @@ function WeatherTab({ weather }) {
   }
 
   return (
-    <div className="flex items-center justify-between px-6 text-sm text-whi">
+    <div className="flex items-center justify-between px-6 text-whi">
       <button
-        className="flex h-5 w-5 items-center justify-center rounded-full bg-dark"
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-dark"
         disabled={sliderStart - 8 <= -1}
         onClick={handleButtonLeft}
       >
@@ -53,7 +53,7 @@ function WeatherTab({ weather }) {
         <Tabs key={i} weather={weather} />
       ))}
       <button
-        className="flex h-5 w-5 items-center justify-center rounded-full bg-dark"
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-dark"
         disabled={sliderEnd + 8 >= 24}
         onClick={handleButtonRight}
       >

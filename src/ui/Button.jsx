@@ -4,7 +4,7 @@ function Button({ children, type = "regular", onClick }) {
     return (
       <button
         onClick={onClick}
-        className="relative flex items-center gap-2 text-sm text-whi transition-all duration-500"
+        className="relative flex items-center gap-2 text-base text-whi transition-all duration-500"
       >
         {children}
       </button>

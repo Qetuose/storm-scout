@@ -1,4 +1,3 @@
-import { MapContainer, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import { useEffect } from "react";
 function Map() {

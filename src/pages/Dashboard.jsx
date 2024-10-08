@@ -6,6 +6,7 @@ import Map from "../ui/Map";
 
 function Dashboard() {
   const { weather, isLoading } = useWeather();
+
   if (isLoading) return <p>Loading...</p>;
 
   return (

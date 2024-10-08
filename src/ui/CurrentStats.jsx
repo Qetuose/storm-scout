@@ -23,31 +23,32 @@ function CurrentStat() {
     weather_code,
   } = current;
 
-  const pStyle = "text-whiDarker text-xs";
-  const h3Style = "text-lg";
+  const pStyle = "text-whiDarker text-md";
+  const h3Style = "text-3xl";
+  const divStyle = "flex flex-col gap-1 items-center justify-center";
 
   return (
     <div className="flex items-center justify-around text-whi">
       <div className="rounded-xl bg-dark shadow-md shadow-black/40">
         <WeatherSvg
           state={getWeatherIcon(weather_code, true)}
-          width={75}
-          height={75}
+          width={100}
+          height={100}
         />
       </div>
-      <div>
+      <div className={divStyle}>
         <h3 className={h3Style}>{city}</h3>
         <p className={pStyle}>{country}</p>
       </div>
-      <div>
+      <div className={divStyle}>
         <h3 className={h3Style}>{formatTemp(temp, unit)}&deg;</h3>
         <p className={pStyle}>Temperature</p>
       </div>
-      <div>
+      <div className={divStyle}>
         <h3 className={h3Style}>{humidity}%</h3>
         <p className={pStyle}>Humidity</p>
       </div>
-      <div>
+      <div className={divStyle}>
         <h3 className={h3Style}>{windspeed} km/h</h3>
         <p className={pStyle}>Wind speed</p>
       </div>
