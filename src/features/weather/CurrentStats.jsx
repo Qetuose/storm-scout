@@ -1,11 +1,14 @@
 import { WeatherSvg } from "weather-icons-animated";
-import { useWeather } from "../features/weather/useWeather";
-import { formatTemp, getWeatherIcon } from "../utils/helpers";
-import { useUnit } from "../contexts/UnitContext";
+import { useWeather } from "./useWeather";
+import { formatTemp, getWeatherIcon } from "../../utils/helpers";
 import { Spinner } from "@material-tailwind/react";
+import { useUnit } from "../../contexts/UnitContext";
+import { useLocation } from "../../contexts/LocationContext";
+import { useEffect } from "react";
 
 function CurrentStat() {
-  const { weather, isLoading } = useWeather();
+  const { location: locationInput } = useLocation();
+  const { weather, isLoading } = useWeather(locationInput);
   const { unit } = useUnit();
 
   if (isLoading)
@@ -15,7 +18,8 @@ function CurrentStat() {
       </div>
     );
 
-  const { country, name: city, current } = weather;
+  const { location, current } = weather;
+
   const {
     temperature_2m: temp,
     relative_humidity_2m: humidity,
@@ -37,8 +41,8 @@ function CurrentStat() {
         />
       </div>
       <div className={divStyle}>
-        <h3 className={h3Style}>{city}</h3>
-        <p className={pStyle}>{country}</p>
+        <h3 className={h3Style}>{location.city}</h3>
+        <p className={pStyle}>{location.country}</p>
       </div>
       <div className={divStyle}>
         <h3 className={h3Style}>{formatTemp(temp, unit)}&deg;</h3>
