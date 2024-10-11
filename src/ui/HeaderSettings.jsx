@@ -1,46 +1,59 @@
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import Button from "./Button";
+import { useState, useEffect } from "react";
 import { useUnit } from "../contexts/UnitContext";
 import { useLocation } from "../contexts/LocationContext";
-import { useChangeWeather } from "../features/weather/useChangeWeather";
 
 function HeaderSettings() {
   const { unit, setUnit } = useUnit();
   const { location, setLocation } = useLocation();
-  const { changeWeather } = useChangeWeather(location);
 
-  function submitHandler(e) {
-    e.preventDefault();
-  }
+  const [cityInput, setCityInput] = useState(location); // Hold the input value
+  const [debouncedCity, setDebouncedCity] = useState(location); // Debounced value
 
   const pos =
     unit === "C"
       ? "translate-x-[-70%] translate-y-[-10%]"
       : "translate-x-[20%] translate-y-[-10%]";
 
+  // Debounce effect: Update debouncedCity after 300ms of no typing
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (cityInput && cityInput.length >= 3) {
+        // Only update if input has 3 or more characters
+        setDebouncedCity(cityInput);
+      }
+    }, 300); // 300ms delay
+
+    return () => {
+      clearTimeout(handler); // Clear the timeout if input changes before delay
+    };
+  }, [cityInput]); // Run this effect whenever the input changes
+
+  // Update location when the debounced city changes
+  useEffect(() => {
+    setLocation(debouncedCity);
+  }, [debouncedCity, setLocation]);
+
   return (
     <div className="flex items-center justify-center gap-2">
-      {/* <SearchForm /> */}
       <div className="relative flex items-center justify-center">
-        <HiMagnifyingGlass className="translate-y-25%] absolute left-2 top-[25%] z-20 h-6 w-6 fill-whi" />
-        <form onSubmit={submitHandler}>
-          <input
-            className="flex h-11 w-[18rem] items-center rounded-full border-2 border-solid border-dark border-transparent bg-lightest pl-9 text-base text-whi duration-150 placeholder:text-sm placeholder:text-whi focus:scale-x-105 focus:border-transparent focus:ring-0"
-            type="text"
-            placeholder="Search for city"
-            defaultValue={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              console.log(location);
-              changeWeather(location);
-            }}
-          />
-        </form>
+        <HiMagnifyingGlass className="absolute left-2 top-[25%] z-20 h-6 w-6" />
+
+        <input
+          className="flex h-11 w-[18rem] items-center rounded-full border-2 border-solid border-dark bg-lightest pl-9 text-base text-darkest placeholder:text-sm placeholder:text-dark focus:scale-x-105 focus:border-transparent focus:ring-0"
+          type="text"
+          placeholder="Search for city"
+          defaultValue={cityInput}
+          onChange={(e) => setCityInput(e.target.value)} // Update input state
+        />
       </div>
-      <select className="h-11 rounded-2xl border-2 border-solid border-dark bg-lightest text-center text-base text-whi">
+
+      <select className="h-11 rounded-2xl border-2 border-solid border-dark bg-lightest text-center text-base text-dark">
         <option>ENG</option>
         <option>LT</option>
       </select>
+
       <div className="flex h-11 w-[4rem] items-center justify-center gap-1 rounded-2xl border-2 border-solid border-dark bg-lightest">
         <Button
           type="toggle"

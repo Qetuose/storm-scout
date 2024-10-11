@@ -1,23 +1,9 @@
 import { WeatherSvg } from "weather-icons-animated";
-import { useWeather } from "./useWeather";
 import { formatTemp, getWeatherIcon } from "../../utils/helpers";
-import { Spinner } from "@material-tailwind/react";
 import { useUnit } from "../../contexts/UnitContext";
-import { useLocation } from "../../contexts/LocationContext";
-import { useEffect } from "react";
 
-function CurrentStat() {
-  const { location: locationInput } = useLocation();
-  const { weather, isLoading } = useWeather(locationInput);
+function CurrentStat({ weather }) {
   const { unit } = useUnit();
-
-  if (isLoading)
-    return (
-      <div className="col-[1/-1] row-[1/-1] grid items-center justify-center">
-        <Spinner className="h-12 w-12" color="purple" />
-      </div>
-    );
-
   const { location, current } = weather;
 
   const {

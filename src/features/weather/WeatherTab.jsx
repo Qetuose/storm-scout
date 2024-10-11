@@ -4,6 +4,7 @@ import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 
 function WeatherTab({ weather }) {
   const [weatherTabs, setWeatherTabs] = useState([]);
+
   const [sliderStart, setSliderStart] = useState(0);
   const [sliderEnd, setSliderEnd] = useState(7);
 
@@ -13,9 +14,9 @@ function WeatherTab({ weather }) {
       setWeatherTabs((tab) => [
         ...tab,
         {
-          time: weather.hourly.time.slice(0, 24)[i],
-          temp: weather.hourly.temperature_2m.slice(0, 24)[i],
-          code: weather.hourly.weather_code.slice(0, 24)[i],
+          time: weather?.hourly.time.slice(0, 24)[i],
+          temp: weather?.hourly.temperature_2m.slice(0, 24)[i],
+          code: weather?.hourly.weather_code.slice(0, 24)[i],
         },
       ]);
     }

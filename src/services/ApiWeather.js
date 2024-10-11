@@ -1,64 +1,79 @@
 export async function getWeather(city) {
-  let coords = { lat: "", lng: "" };
-  if (!city) {
-    //Get user's coords
-    const position = await new Promise((resolve, reject) =>
-      navigator.geolocation.getCurrentPosition(resolve, reject),
-    );
-    coords = { lat: position.coords.latitude, lng: position.coords.longitude };
+  const geoapifyApiKey = "ef4117597aa144e69f19c3fd358e6cd1";
 
-    //Reverse coords to a valid location
-    const responseRevese = await fetch(
-      `https://api.geoapify.com/v1/geocode/reverse?lat=${coords.lat}&lon=${coords.lng}&format=json&apiKey=ef4117597aa144e69f19c3fd358e6cd1`,
-    );
-    const dataRevese = await responseRevese.json();
-
-    const location = {
-      city: dataRevese.results.at(0).city
-        ? dataRevese.results.at(0).city
-        : dataRevese.results.at(0).county,
-      country: dataRevese.results.at(0).country,
-    };
-
-    //Get the weather forecast
+  // Helper function to get weather data
+  async function fetchWeatherData(latitude, longitude) {
     const weatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_80m`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_80m`,
     );
-    const weatherData = await weatherResponse.json();
-
-    const data = { ...weatherData, location };
-    return data;
+    if (!weatherResponse.ok) {
+      throw new Error("Failed to fetch weather data");
+    }
+    return weatherResponse.json();
   }
-}
 
-export async function changeWeather(city) {
-  console.log(city);
-  const geoResponse = await fetch(
-    `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
-  );
+  // Helper function to reverse geocode coordinates
+  async function reverseGeocode(lat, lon) {
+    const response = await fetch(
+      `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&format=json&apiKey=${geoapifyApiKey}`,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch location data");
+    }
+    const data = await response.json();
+    const result = data.results[0];
+    return {
+      city: result.city || result.county,
+      country: result.country,
+    };
+  }
 
-  const geoData = await geoResponse.json();
+  // Helper function to geocode a city name to coordinates
+  async function geocodeCity(city) {
+    const response = await fetch(
+      `https://geocoding-api.open-meteo.com/v1/search?name=${city}`,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch geocoding data");
+    }
+    const data = await response.json();
+    if (!data.results || data.results.length === 0) {
+      throw new Error("Location not found");
+    }
+    const { latitude, longitude } = data.results[0];
+    return { latitude, longitude };
+  }
 
-  if (!geoData.results) throw new Error("Location not found");
-  const { latitude, longitude } = geoData.results.at(0);
+  try {
+    let coords = { lat: "", lng: "" };
+    let location = {};
 
-  const weatherResponse = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_80m`,
-  );
-  const weatherData = await weatherResponse.json();
+    if (!city) {
+      // Get user's current coordinates if no city is provided
+      const position = await new Promise((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject),
+      );
+      coords.lat = position.coords.latitude;
+      coords.lng = position.coords.longitude;
 
-  const responseRevese = await fetch(
-    `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=ef4117597aa144e69f19c3fd358e6cd1`,
-  );
-  const dataRevese = await responseRevese.json();
-  const location = {
-    city: dataRevese.results.at(0).city
-      ? dataRevese.results.at(0).city
-      : dataRevese.results.at(0).county,
-    country: dataRevese.results.at(0).country,
-  };
+      // Reverse geocode to get the city and country name
+      location = await reverseGeocode(coords.lat, coords.lng);
+    } else {
+      // Get coordinates using the city name
+      const { latitude, longitude } = await geocodeCity(city);
+      coords = { lat: latitude, lng: longitude };
 
-  console.log(location);
-  const data = { ...weatherData, location };
-  return data;
+      // Perform reverse geocoding to get the country (even if we already have the city)
+      location = await reverseGeocode(latitude, longitude);
+    }
+
+    // Fetch weather data for the determined coordinates
+    const weatherData = await fetchWeatherData(coords.lat, coords.lng);
+
+    // Return weather data along with location info (city and country)
+    return { ...weatherData, location };
+  } catch (error) {
+    console.error(error.message);
+    throw new Error("Error retrieving weather data");
+  }
 }
