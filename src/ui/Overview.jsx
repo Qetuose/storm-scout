@@ -1,21 +1,44 @@
+import { useParams, Link } from "react-router-dom";
 import {
-  Area,
   CartesianGrid,
   Line,
   LineChart,
-  ReferenceDot,
   ResponsiveContainer,
   XAxis,
   YAxis,
 } from "recharts";
 import Container from "./Container";
 
-const buttonActive = "";
-
 function Overview({ weather }) {
+  console.log(weather);
+  const { type } = useParams();
   const chartData = [];
+  let dataKey;
+  let unit;
 
-  // Loop through weather data and format it for the chart
+  switch (type) {
+    case "humidity":
+      dataKey = "relative_humidity_2m";
+      unit = "%";
+      break;
+    case "uv":
+      dataKey = "uv_index";
+      unit = "";
+      break;
+    case "rain":
+      dataKey = "rain";
+      unit = "mm";
+      break;
+    case "wind_speed_80m":
+      dataKey = "wind_speed_80m";
+      unit = "km/h";
+      break;
+    default:
+      dataKey = "relative_humidity_2m";
+      unit = "%";
+      break;
+  }
+
   for (let i = 0; i <= weather.hourly.time.length - 1; i++) {
     const date = new Date(weather.hourly.time[i]);
     const formattedDate = date.toLocaleString("en-US", {
@@ -25,31 +48,27 @@ function Overview({ weather }) {
     });
     const obj = {
       time: formattedDate,
-      humidity: weather.hourly.relative_humidity_2m[i],
+      value: weather.hourly[dataKey][i],
     };
     chartData.push(obj);
   }
 
-  // Calculate the average humidity
   const avg = Math.round(
-    weather.hourly.relative_humidity_2m.reduce((acc, cur) => acc + cur, 0) /
-      weather.hourly.relative_humidity_2m.length,
+    weather.hourly[dataKey].reduce((acc, cur) => acc + cur, 0) /
+      weather.hourly[dataKey].length,
   );
 
-  // Find the middle index to place the avg value
   const middleIndex = Math.floor(chartData.length / 2);
 
-  // Create a new object for the avg value with the same time as the middle index
   const avgValue = {
     time: chartData[middleIndex].time,
-    humidity: avg, // Use the same key for humidity to prevent splitting the line
+    value: avg,
   };
 
-  // Insert avg value into the middle of the dataset
   const updatedData = [
-    ...chartData.slice(0, middleIndex), // First half of data
-    avgValue, // Average value in the middle
-    ...chartData.slice(middleIndex), // Second half of data
+    ...chartData.slice(0, middleIndex),
+    avgValue,
+    ...chartData.slice(middleIndex),
   ];
 
   return (
@@ -57,24 +76,55 @@ function Overview({ weather }) {
       <div className="flex justify-between">
         <h2 className="flex self-center text-3xl text-whi">Overview</h2>
         <div className="flex items-center justify-between gap-4 rounded-2xl bg-darkest p-2 text-whi">
-          <button className="rounded-lg bg-whi p-1 text-darkest">
-            Humidity
-          </button>
-          <button>UV index</button>
-          <button>Rainfall</button>
-          <button>Pressure</button>
+          <Link to="/dashboard/humidity">
+            <button
+              className={
+                type === "humidity" ? "rounded-lg bg-whi p-1 text-darkest" : ""
+              }
+            >
+              Humidity
+            </button>
+          </Link>
+          <Link to="/dashboard/uv">
+            <button
+              className={
+                type === "uv" ? "rounded-lg bg-whi p-1 text-darkest" : ""
+              }
+            >
+              UV index
+            </button>
+          </Link>
+          <Link to="/dashboard/rain">
+            <button
+              className={
+                type === "rain" ? "rounded-lg bg-whi p-1 text-darkest" : ""
+              }
+            >
+              Rainfall
+            </button>
+          </Link>
+          <Link to="/dashboard/wind_speed_80m">
+            <button
+              className={
+                type === "wind_speed_80m"
+                  ? "rounded-lg bg-whi p-1 text-darkest"
+                  : ""
+              }
+            >
+              Wind speed
+            </button>
+          </Link>
         </div>
       </div>
 
       <ResponsiveContainer height={200} width="100%">
         <LineChart data={updatedData}>
           <XAxis dataKey="time" stroke="#f5f5f7" />
-          <YAxis dataKey="humidity" unit="%" stroke="#f5f5f7" />
+          <YAxis dataKey="value" unit={unit} stroke="#f5f5f7" />
           <CartesianGrid strokeDasharray="3 3" />
-
           <Line
             type="monotone"
-            dataKey="humidity"
+            dataKey="value"
             dot={false}
             stroke="#404258"
             strokeWidth="3px"

@@ -5,6 +5,7 @@ import Map from "../ui/Map";
 import { useWeather } from "../features/weather/useWeather";
 import { useLocation } from "../contexts/LocationContext";
 import Overview from "../ui/Overview";
+import Forecasts from "../ui/Forecasts";
 
 function Dashboard() {
   const { location } = useLocation(); // Get current location from context
@@ -20,6 +21,7 @@ function Dashboard() {
       </Container>
       <Map />
       <Overview weather={weather} />
+      <Forecasts />
     </>
   );
 }
