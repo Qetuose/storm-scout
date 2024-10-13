@@ -1,5 +1,6 @@
 function Button({ children, type = "regular", onClick }) {
   if (type === "regular") return <button>{children}</button>;
+
   if (type === "toggle")
     return (
       <button

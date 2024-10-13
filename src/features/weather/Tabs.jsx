@@ -5,6 +5,7 @@ import WeatherIcon from "react-icons-weather";
 function Tabs({ weather }) {
   const { unit } = useUnit();
   const { temp, time, code } = weather;
+  console.log(code);
 
   return (
     <div>

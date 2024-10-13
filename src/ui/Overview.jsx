@@ -10,7 +10,6 @@ import {
 import Container from "./Container";
 
 function Overview({ weather }) {
-  console.log(weather);
   const { type } = useParams();
   const chartData = [];
   let dataKey;

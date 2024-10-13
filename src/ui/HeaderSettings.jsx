@@ -57,6 +57,7 @@ function HeaderSettings() {
       <div className="flex h-11 w-[4rem] items-center justify-center gap-1 rounded-2xl border-2 border-solid border-dark bg-lightest">
         <Button
           type="toggle"
+          unit={unit}
           onClick={() => setUnit((unit) => (unit === "F" ? "C" : "F"))}
         >
           <span className={unit === "C" ? "z-10 text-darkest" : ""}>

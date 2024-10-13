@@ -21,7 +21,7 @@ function Dashboard() {
       </Container>
       <Map />
       <Overview weather={weather} />
-      <Forecasts />
+      <Forecasts weather={weather} />
     </>
   );
 }
