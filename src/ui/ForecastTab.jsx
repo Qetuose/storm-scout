@@ -1,15 +1,26 @@
-import { getWeatherIcon } from "../utils/helpers";
-import Container from "./Container";
+import { useUnit } from "../contexts/UnitContext";
+import { formatTemp, getWeatherIcon } from "../utils/helpers";
+
 import WeatherIcon from "react-icons-weather";
 
 function ForecastTab({ data }) {
-  console.log(data.code);
+  const { unit } = useUnit();
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center">
-        <WeatherIcon name="owm" iconId={getWeatherIcon(+data.code)} />
+    <div className="mx-9 flex items-center justify-between rounded-lg bg-dark p-4 text-whi">
+      <div className="flex items-center gap-2">
+        <WeatherIcon
+          name="owm"
+          iconId={getWeatherIcon(+data.code)}
+          className="text-3xl"
+        />
         <p>
-          <span>{data.tempDay}</span>/<span>{data.tempNight}</span>
+          <span className="text-2xl">
+            {formatTemp(data.tempDay, unit)}&deg;
+          </span>
+          /
+          <span className="text-lg text-whiDarker">
+            {formatTemp(data.tempNight, unit)}&deg;
+          </span>
         </p>
       </div>
       <p>{data.date}</p>

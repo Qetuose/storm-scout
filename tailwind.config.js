@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line
 const withMT = require("@material-tailwind/react/utils/withMT");
+const plugin = require("tailwindcss");
 
 module.exports = withMT({
   content: [
@@ -24,5 +25,13 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+      });
+    }),
+  ],
 });

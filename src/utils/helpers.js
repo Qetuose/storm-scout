@@ -24,9 +24,13 @@ export function getWeatherIcon(wmoCode, animated = false) {
 
 export function formatTemp(temp, curUnit) {
   let formatedTemp;
-  if (curUnit === "C" && Number(temp) > 0) formatedTemp = `+${temp + curUnit}`;
+  if (curUnit === "C" && Number(temp) > 0)
+    formatedTemp = +temp >= 0 ? `+${temp + curUnit}` : `-${temp + curUnit}`;
   if (curUnit === "F" && convertTofahrenheit(temp) > 0)
-    formatedTemp = `+${convertTofahrenheit(temp) + curUnit}`;
+    formatedTemp =
+      convertTofahrenheit(temp) >= 0
+        ? `+${convertTofahrenheit(temp) + curUnit}`
+        : `-${convertTofahrenheit(temp) + curUnit}`;
 
   return formatedTemp;
 }

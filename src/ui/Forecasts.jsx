@@ -2,6 +2,7 @@ import { useState } from "react";
 import Container from "./Container";
 import ForecastTab from "./ForecastTab";
 import Button from "./Button";
+import "../index.css";
 
 function Forecasts({ weather }) {
   const [amount, setAmount] = useState(72);
@@ -75,7 +76,7 @@ function Forecasts({ weather }) {
   console.log(forecastData);
 
   return (
-    <Container>
+    <Container gap={5}>
       <div className="flex items-center justify-between">
         <h2 className="flex self-center text-3xl text-whi">Forecasts</h2>
         <div className="flex items-center justify-between gap-4 rounded-lg bg-darkest p-1">
@@ -95,9 +96,11 @@ function Forecasts({ weather }) {
           </Button>
         </div>
       </div>
-      {forecastData.map((data) => (
-        <ForecastTab data={data} key={data.day} />
-      ))}
+      <div className="no-scrollbar flex h-[15rem] flex-col gap-2 overflow-auto">
+        {forecastData.map((data) => (
+          <ForecastTab data={data} key={data.day} />
+        ))}
+      </div>
     </Container>
   );
 }

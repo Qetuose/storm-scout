@@ -15,7 +15,7 @@ function Dashboard() {
 
   return (
     <>
-      <Container>
+      <Container gap={10}>
         <CurrentStats weather={weather} />
         <WeatherTab weather={weather} />
       </Container>

@@ -1,6 +1,8 @@
-function Container({ children }) {
+function Container({ children, gap }) {
   return (
-    <div className="flex flex-col gap-10 overflow-hidden rounded-xl bg-lightest p-3">
+    <div
+      className={`flex flex-col gap-${gap} overflow-hidden rounded-xl bg-lightest p-3`}
+    >
       {children}
     </div>
   );
