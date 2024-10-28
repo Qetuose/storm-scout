@@ -8,6 +8,7 @@ function Modal({ children }) {
   const [openName, setOpenName] = useState("");
   const close = () => setOpenName("");
   const open = setOpenName;
+
   return (
     <ModalContext.Provider value={{ openName, close, open }}>
       {children}
@@ -17,7 +18,6 @@ function Modal({ children }) {
 
 function Open({ children, opens: opensWindowName }) {
   const { open } = useContext(ModalContext);
-
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
@@ -27,9 +27,9 @@ function Window({ children, name }) {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-dark px-[3.2rem] py-[4rem] transition-all">
-      <div className="fixed left-0 top-0 h-[100vh] w-[100%] bg-gray-500 opacity-30">
-        <button>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30">
+      <div className="relative bg-dark px-[3.2rem] py-[4rem]">
+        <button className="absolute right-2 top-2" onClick={close}>
           <HiXMark />
         </button>
         <div>{cloneElement(children, { onCloseModal: close })}</div>

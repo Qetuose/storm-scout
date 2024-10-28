@@ -18,7 +18,7 @@ function CurrentStat({ weather }) {
   const divStyle = "flex flex-col gap-1 items-center justify-center";
 
   return (
-    <div className="flex items-center justify-around text-whi">
+    <div className="mb-3 flex items-center justify-around text-whi">
       <div className="rounded-xl bg-dark shadow-md shadow-black/40">
         <WeatherSvg
           state={getWeatherIcon(weather_code, true)}
